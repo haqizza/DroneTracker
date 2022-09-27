@@ -23,11 +23,8 @@ class Track extends Model
         return $this->belongsTo(Code::class);
     }
 
-    protected static function booted()
+    public function security()
     {
-        static::created(function ($data) {
-
-            Tracker::dispatch($data);
-        });
+        return $this->belongsTo(Security::class);
     }
 }

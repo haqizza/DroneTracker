@@ -20,7 +20,7 @@ class Tracker implements ShouldBroadcast
      *
      * @return void
      */
-    public function __construct(Track $data)
+    public function __construct($data)
     {
         $this->data = $data;
     }

@@ -14,8 +14,11 @@ return new class extends Migration
     public function up()
     {
         Schema::create('drones', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
+            $table->string('id')->primary();
+            $table->foreignId('mode_id')->default(1)->constrained()->onDelete('cascade')->onUpdate('cascade');
+            $table->string('merk');
+            $table->string('image')->nullable();
+            $table->longText('description')->nullable();
             $table->timestamps();
         });
     }

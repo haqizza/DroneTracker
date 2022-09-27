@@ -10,7 +10,15 @@ class Drone extends Model
 {
     use HasFactory;
 
-    protected $guarded = ['id'];
+    protected $keyType = 'string';
+    public $incrementing = false;
+    protected $fillable = [
+        'id',
+        'merk',
+        'image',
+        'mode_id',
+        'description'
+    ];
 
     public function tracks()
     {

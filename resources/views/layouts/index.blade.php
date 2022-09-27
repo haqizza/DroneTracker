@@ -18,11 +18,18 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"
         integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="{{ asset('js/flight-indicators-js/css/flight-indicators.css') }}">
+    <script src="{{ asset('js/flight-indicators-js/js/flight-indicators.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="/js/gauge/gauge.min.js"></script>
     <title>Tracker</title>
 </head>
 
 <body>
-    @yield('content')
+    <div class="container">
+        @include('template.sidebar')
+        @yield('content')
+    </div>
 </body>
 
 </html>
