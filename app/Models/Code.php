@@ -9,8 +9,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Code extends Model
 {
     use HasFactory;
-
-    protected $guarded = ['id'];
+    protected $keyType = 'string';
+    public $incrementing = false;
+    protected $fillable = ['id'];
 
     public function track()
     {

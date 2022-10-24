@@ -14,7 +14,6 @@
                         <input type="date" name="to" id="to">
                     </div>
                     <div class="group">
-                        <label for=""></label>
                         <button type="submit">filter</button>
                     </div>
                 </form>

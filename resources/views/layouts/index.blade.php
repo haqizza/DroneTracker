@@ -19,6 +19,8 @@
         integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <link rel="stylesheet" href="{{ asset('js/flight-indicators-js/css/flight-indicators.css') }}">
+    <link rel="stylesheet" href="{{ asset('js/center-leafet/L.Control.MapCenterCoord.min.css') }}">
+    <script src="{{ asset('js/center-leafet/L.Control.MapCenterCoord.min.js') }}"></script>
     <script src="{{ asset('js/flight-indicators-js/js/flight-indicators.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script src="/js/gauge/gauge.min.js"></script>

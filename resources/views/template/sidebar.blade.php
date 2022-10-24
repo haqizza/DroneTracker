@@ -1,7 +1,9 @@
 <div class="nav" id="sidebar">
     <div class="toggler">
         <div class="logo">
-            <img src="{{ asset('images/ipb.png') }}" alt="">
+            @isset($navbars->image)
+                <img src="{{ asset($navbars->image) }}" alt="">
+            @endisset
         </div>
         <div class="box">
             <input type="checkbox" name="toggle" id="toggle">
@@ -23,9 +25,9 @@
                         Master</span></button>
                 <div class="master-menu" id="master-menu">
                     <a href="{{ route('management.drone') }}" class="drop-link"><span>Drone</span></a>
-                    <a href="{{ route('management.drone') }}" class="drop-link"><span>User</span></a>
-                    <a href="{{ route('management.drone') }}" class="drop-link"><span>Security</span></a>
-                    <a href="{{ route('management.drone') }}" class="drop-link"><span>Legends</span></a>
+                    <a href="{{ route('management.user') }}" class="drop-link"><span>User</span></a>
+                    <a href="{{ route('management.security') }}" class="drop-link"><span>Security</span></a>
+                    <a href="{{ route('management.legend') }}" class="drop-link"><span>Legends</span></a>
                 </div>
             </div>
             <div class="data-master-dropdown">
@@ -49,6 +51,7 @@
 </div>
 <script>
     document.getElementById('open-master').addEventListener('click', function() {
+        localStorage.setItem('toggled', 'enabled')
         document.getElementById('master-menu').classList.toggle('open');
         if (document.getElementById('master-menu').classList.contains('open')) {
             document.getElementById('open-master').classList.add('on')
@@ -67,6 +70,7 @@
     });
 
     document.getElementById('open-report').addEventListener('click', function() {
+        localStorage.setItem('toggled', 'enabled')
         document.getElementById('report-menu').classList.toggle('open');
         if (document.getElementById('report-menu').classList.contains('open')) {
             document.getElementById('open-report').classList.add('on');
@@ -109,8 +113,33 @@
 
         display_c();
     }
+
+    let toggled = localStorage.getItem('toggled');
+
+    const enableSidebar = () => {
+        document.getElementById('sidebar').classList.add('expand')
+        localStorage.setItem('toggled', 'enabled')
+    };
+    const disableSidebar = () => {
+        document.getElementById('sidebar').classList.remove('expand')
+        localStorage.setItem('toggled', null)
+    }
+
+    if (toggled === 'enabled') {
+        enableSidebar()
+        document.getElementById('toggle').checked = true;
+    } else {
+        disableSidebar()
+        document.getElementById('toggle').checked = false;
+    }
+
     document.getElementById('toggle').addEventListener('click', function() {
-        document.getElementById('sidebar').classList.toggle('expand');
+        toggled = localStorage.getItem('toggled')
+        if (toggled !== 'enabled') {
+            enableSidebar()
+        } else {
+            disableSidebar()
+        }
         if (!document.getElementById('sidebar').classList.contains('expand')) {
             document.getElementById('master-menu').classList.remove('open')
             document.getElementById('open-master').classList.remove('on')

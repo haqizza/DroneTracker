@@ -19,13 +19,14 @@ return new class extends Migration
             $table->foreign('drone_id')->on('drones')->references('id')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('security_id')->nullable()->constrained()->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('tea_id')->nullable()->constrained()->onDelete('cascade')->onUpdate('cascade');
+            $table->string('code_id');
+            $table->foreign('code_id')->on('codes')->references('id')->onDelete('cascade')->onUpdate('cascade');
             $table->double('latitude')->nullable();
             $table->double('longitude')->nullable();
             $table->double('altitude')->nullable();
             $table->double('g_roll')->nullable();
             $table->double('g_pitch')->nullable();
             $table->double('haversine')->nullable();
-            $table->integer('code');
             $table->float('rad')->nullable();
             $table->double('speed')->nullable();
             $table->float('arus')->nullable();

@@ -21,7 +21,7 @@
         startAngle: 180,
         strokeTicks: false,
         highlights: false,
-        colorPlate: "#000000",
+        colorPlate: "transparent",
         colorMajorTicks: "#9eabec",
         colorMinorTicks: "#ddd",
         colorNumbers: "#ccc",
@@ -73,7 +73,7 @@
         startAngle: 180,
         strokeTicks: false,
         highlights: false,
-        colorPlate: "#000000",
+        colorPlate: "transparent",
         colorMajorTicks: "#f5f5f5",
         colorMinorTicks: "#ddd",
         colorNumbers: "#ccc",
@@ -115,7 +115,7 @@
             "300",
             "400",
         ],
-        colorPlate: '#000000',
+        colorPlate: 'transparent',
         colorNumbers: "#FFFFFF",
         colorNeedle: "#9eabec",
         colorNeedleEnd: "#9eabec",
@@ -144,7 +144,7 @@
         ],
         minorTicks: 5,
         strokeTicks: true,
-        colorPlate: "#000000",
+        colorPlate: "transparent",
         colorMajorTicks: "#FFFFFF",
         colorMinorTicks: "#FFFFFF",
         colorNumbers: "#FFFFFF",
@@ -171,13 +171,15 @@
         zoom: 12,
         center: new L.latLng(-6.967512300523178, 107.65906856904034)
     });
-
     map.addLayer(new L.tileLayer('http://{s}.google.com/vt?lyrs=m&x={x}&y={y}&z={z}', {
         maxZoom: 20,
         minZoom: 4,
         noWrap: true,
         subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
     }));
+    L.control.mapCenterCoord({
+        onMove: true,
+    }).addTo(map);
     var droneIcon = L.Icon.extend({
         options: {
             iconSize: [30, 30],
@@ -263,6 +265,7 @@
                 res.data.latitude, res.data.longitude
             ],
         );
+
         var polyline = L.polyline(latlngs, {
             color: 'blue'
         }).addTo(map);

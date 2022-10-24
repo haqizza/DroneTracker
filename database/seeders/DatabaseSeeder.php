@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\App;
 use App\Models\Mode;
 use App\Models\User;
 use App\Models\Drone;
@@ -32,7 +34,6 @@ class DatabaseSeeder extends Seeder
                 'name' => 'hybrid'
             ]
         );
-
         Drone::create(
             [
                 'id' => 'MKR2022',
@@ -46,6 +47,14 @@ class DatabaseSeeder extends Seeder
                 'name' => 'superuser',
                 'email' => 'superuser@super.com',
                 'password' => bcrypt('SuperUser999!')
+            ]
+        );
+        App::create(
+            [
+                'name' => 'GCS',
+                'version' => '1.0.0',
+                'image' => 'images/app/logo.png',
+                'description' => 'GROUND CONTROL SYSTEM'
             ]
         );
     }

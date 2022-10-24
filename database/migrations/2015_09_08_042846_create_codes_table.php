@@ -14,8 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('codes', function (Blueprint $table) {
-            $table->id();
-            $table->integer('code');
+            $table->string('id')->primary()->unique();
             $table->timestamps();
         });
     }

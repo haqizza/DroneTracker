@@ -20,7 +20,7 @@ class DroneController extends Controller
             $request->all(),
             [
                 'drone_id' => 'required',
-                'code' => 'required',
+                'code_id' => 'required',
                 'latitude' => 'required',
                 'longitude' => 'required'
             ]
@@ -32,12 +32,21 @@ class DroneController extends Controller
 
         $check = Track::where('id', 1)->exists();
 
-        $data = new Track();
-        $data->drone_id = $request->input('drone_id');
-        $data->code = $request->input('code');
-        $data->latitude = $request->input('latitude');
-        $data->longitude = $request->input('longitude');
-        $data->altitude = $request->input('altitude');
+        $track = new Track();
+        $track->drone_id = $request->input('drone_id');
+        $code_check = Code::where('id', $request->code_id)->exists();
+        if ($code_check) {
+            $thecode = $request->code_id;
+        } else {
+            $code = new Code();
+            $code->id = $request->code_id;
+            $code->save();
+            $thecode = $code->id;
+        }
+        $track->code_id = $thecode;
+        $track->latitude = $request->input('latitude');
+        $track->longitude = $request->input('longitude');
+        $track->altitude = $request->input('altitude');
         if ($check) {
             $latest = Track::orderBy('created_at', 'desc')->first();
 
@@ -52,14 +61,14 @@ class DroneController extends Controller
             $angle = 2 * asin(sqrt(pow(sin($latDelta / 2), 2) +
                 cos($latFrom) * cos($latTo) * pow(sin($lgnDelta / 2), 2)));
 
-            $data->haversine = $angle * 6371;
+            $track->haversine = $angle * 6371;
         } else {
-            $data->haversine = 0;
+            $track->haversine = 0;
         }
         if ($check) {
             $mentah = Track::orderBy('created_at', 'desc')->first();
             $waktu = (strtotime(Carbon::now()) - strtotime($mentah->created_at)) / 3600;
-            $jarak = $data->haversine;
+            $jarak = $track->haversine;
             if ($jarak > 0.00000000) {
                 $hasil = $jarak / $waktu;
             } else {
@@ -69,13 +78,13 @@ class DroneController extends Controller
             $hasil = 0;
         }
         $security_check = Security::where('id', $request->security_id)->exists();
-        $data->speed = $hasil;
-        $data->g_roll = $request->g_roll;
-        $data->g_pitch = $request->g_pitch;
-        $data->tegangan = $request->tegangan;
+        $track->speed = $hasil;
+        $track->g_roll = $request->g_roll;
+        $track->g_pitch = $request->g_pitch;
+        $track->tegangan = $request->tegangan;
         if ($request->security_id) {
             if ($security_check) {
-                $data->security_id = $request->security_id;
+                $track->security_id = $request->security_id;
             } else {
                 return response()->json(
                     [
@@ -86,12 +95,12 @@ class DroneController extends Controller
             }
         }
 
-        $data->save();
+        $track->save();
 
-        event(new Tracker($data));
-        if ($data->security_id) {
+        event(new Tracker($track));
+        if ($track->security_id) {
             if ($security_check) {
-                event(new SecurityEvent($data->security->part, $data->security->tingkat_resiko, $data->security->dampak));
+                event(new SecurityEvent($track->security->part, $track->security->tingkat_resiko, $track->security->dampak));
             } else {
                 return response()->json(
                     [
@@ -102,12 +111,12 @@ class DroneController extends Controller
             }
         }
 
-        if ($data) {
+        if ($track) {
             return response()->json(
                 [
                     'success' => true,
                     'message' => 'Data Added!',
-                    'data' => $data
+                    'data' => $track
                 ],
                 201
             );

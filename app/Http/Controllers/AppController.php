@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\App;
+use App\Models\Code;
 use App\Models\Drone;
 use App\Models\Track;
 use App\Models\Legend;
@@ -12,11 +14,12 @@ use Illuminate\Support\Facades\Validator;
 
 class AppController extends Controller
 {
-    public function dashboard()
+    public function dashboard(Request $request)
     {
         $data = Drone::first();
         $latest = Track::orderBy('created_at', 'desc')->first();
         $oldest = Track::orderBy('created_at', 'asc')->first();
+        $codes = Code::all();
         $all = Track::all();
         $count = Track::pluck('haversine')->toArray();
         $counted = array_sum($count);
@@ -36,128 +39,54 @@ class AppController extends Controller
         } else {
             $waktu = '';
         }
-        return view('pages.index', compact('data', 'latest', 'all', 'oldest', 'counted', 'starttoend', 'legends', 'waktu', 'waktustart'));
+        return view('pages.index', compact('data', 'latest', 'all', 'oldest', 'counted', 'starttoend', 'legends', 'waktu', 'waktustart', 'codes'));
+    }
+
+    public function flightcode($id)
+    {
+        $code = Track::where('code_id', $id)->get();
+        return response()->json($code);
     }
 
     public function setting()
     {
-        $legends = Legend::all();
-        $securities = Security::all();
-        return view('pages.setting', compact('legends', 'securities'));
+        return view('pages.setting');
     }
 
-    public function legends(Request $request)
+    public function update(Request $request)
     {
         $validator = Validator::make(
             $request->all(),
             [
                 'name' => 'required',
-                'logo' => 'required|image|mimes:svg,png'
+                'description' => 'required',
+                'image' => 'nullable|image|mimes:png,jpg,jpeg',
+                'version' => 'required'
             ]
         );
 
         if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator->errors());
+            return back()->withErrors($validator->errors());
         }
 
-        $data = new Legend();
-        $data->name = $request->name;
-        $data->logo = $request->logo->store('images/legends/logo');
-        $data->save();
 
-        return back()->with('success', 'Berhasil Menambahkan Data Legenda');
-    }
-
-    public function editlegends(Legend $legend)
-    {
-        $legends = Legend::all();
-        $securities = Security::all();
-        return view('pages.management.legends.edit', compact('legend', 'legends', 'securities'));
-    }
-
-    public function updatelegends(Request $request, Legend $legend)
-    {
-        $validator = Validator::make(
-            $request->all(),
-            [
-                'name' => 'required',
-                'logo' => 'required|image|mimes:png,svg'
-            ]
-        );
-
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator->errors());
-        }
-
-        if ($request->logo == null) {
-            $logo = $legend->logo;
-        } else {
-            if (File::exists($legend->logo)) {
-                unlink($legend->logo);
+        $app = App::first();
+        $app->name = $request->name;
+        $app->description = $request->description;
+        if ($request->image) {
+            if (File::exists($app->image)) {
+                unlink($app->image);
+                $img = $request->image->store('images/app');
+            } else {
+                $img = $request->image->store('images/app');
             }
-            $logo = $request->logo->store('images/legends/logo');
+        } else {
+            $img = $app->image;
         }
+        $app->image = $img;
+        $app->version = $request->version;
+        $app->save();
 
-        $legend = Legend::where('id', $legend->id)->first();
-        $legend->name = $request->name;
-        $legend->logo = $logo;
-        $legend->save();
-
-        return redirect()->route('setting')->with('success', 'Berhasil Update Data Legenda');
-    }
-
-    public function security(Request $request)
-    {
-        $validator = Validator::make(
-            $request->all(),
-            [
-                'part' => 'required',
-                'tingkat_resiko' => 'required|numeric',
-                'dampak' => 'required'
-            ]
-        );
-
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator->errors());
-        }
-
-        $data = new Security();
-        $data->part = $request->part;
-        $data->tingkat_resiko = $request->tingkat_resiko;
-        $data->dampak = $request->dampak;
-        $data->save();
-
-        return back()->with('success', 'Berhasil Menambahkan Data Security');
-    }
-
-    public function editsecurities(Security $security)
-    {
-        $legends = Legend::all();
-        $securities = Security::all();
-        return view('pages.management.securities.edit', compact('security', 'legends', 'securities'));
-    }
-
-    public function updatesecurities(Request $request, Security $security)
-    {
-        $validator = Validator::make(
-            $request->all(),
-            [
-                'part' => 'required',
-                'tingkat_resiko' => 'required|numeric',
-                'dampak' => 'required'
-            ]
-        );
-
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator->errors());
-        }
-
-        $security = Security::where('id', $security->id)->first();
-        $security->part = $request->part;
-        $security->tingkat_resiko = $request->tingkat_resiko;
-        $security->dampak = $request->dampak;
-        $security->save();
-
-        return redirect()->route('setting')->with('success', 'Berhasil Update Data Security Status');
+        return back()->with('success', 'Berhasil Update Profile Aplikasi');
     }
 }

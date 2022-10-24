@@ -6,7 +6,9 @@ use Carbon\Carbon;
 use App\Models\Log;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
@@ -96,5 +98,64 @@ class UserController extends Controller
         }
         auth()->logout();
         return redirect()->route('login');
+    }
+
+    public function setting()
+    {
+        $user = User::where('id', auth()->user()->id)->first();
+        return view('pages.auth.setting', compact('user'));
+    }
+
+    public function meEdit()
+    {
+        $user = auth()->user();
+        return view('pages.auth.edit', compact('user'));
+    }
+
+    public function meUpdate(Request $request)
+    {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'name' => 'required',
+                'image' => 'nullable|sometimes|image',
+                'email' => [
+                    'required',
+                    Rule::unique('users')->ignore(auth()->user()->id),
+                ],
+                'password' => [
+                    'nullable',
+                    'sometimes',
+                    Password::min(8)->mixedCase()->numbers()->symbols(),
+                ]
+            ]
+        );
+        if ($validator->fails()) {
+            return back()->withErrors($validator->errors());
+        }
+
+        $user = User::where('id', auth()->user()->id)->first();
+        $user->name = $request->name;
+        $user->email = $request->email;
+        if ($request->password) {
+            $password = bcrypt($request->password);
+        } else {
+            $password = $user->password;
+        }
+        $user->password = $password;
+        if ($request->image) {
+            if (File::exists($user->image)) {
+                unlink($user->image);
+                $img = $request->image->store('/images/user' . $user->name . '/profilepicture');
+            } else {
+                $img = $request->image->store('/images/user' . $user->name . '/profilepicture');
+            }
+        } else {
+            $img = $user->image;
+        }
+        $user->image = $img;
+        $user->save();
+
+        return redirect()->route('user.setting')->with('success', 'Berhasil Update Akun');
     }
 }
