@@ -11,7 +11,8 @@
         </div>
         <div class="sub-content">
             <div class="create">
-                <form action="{{ route('management.security.update',$security->id) }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('management.security.update', $security->id) }}" method="POST"
+                    enctype="multipart/form-data">
                     @csrf
                     <div class="body">
                         <div class="larger">
@@ -23,7 +24,8 @@
                         <div class="larger">
                             <div class="group">
                                 <label for="tingkat_resiko">Tingkat Resiko</label>
-                                <input type="text" name="tingkat_resiko" id="tingkat_resiko" required value="{{ $security->tingkat_resiko }}">
+                                <input type="text" name="tingkat_resiko" id="tingkat_resiko" required
+                                    value="{{ $security->tingkat_resiko }}">
                             </div>
                             <div class="group">
                                 <label for="dampak">Dampak</label>
@@ -69,4 +71,5 @@
             </div>
         </div>
     </div>
+    @include('template.alert')
 @endsection

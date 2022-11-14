@@ -31,4 +31,5 @@
             <a href="{{ route('user.edit') }}" class="link">UPDATE PROFILE</a>
         </div>
     </div>
+    @include('template.alert')
 @endsection

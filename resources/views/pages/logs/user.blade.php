@@ -40,8 +40,10 @@
                             <td>
                                 @if ($log->duration >= 60 && $log->duration < 3600)
                                     {{ number_format($log->duration / 60, 2) }} Menit
-                                @elseif ($log->duration >= 3600)
+                                @elseif ($log->duration >= 3600 && $log->duration < 86400)
                                     {{ number_format($log->duration / 3600, 2) }} Jam
+                                @elseif($log->duration >= 86400)
+                                    {{ number_format($log->duration / 86400, 2) }} Hari
                                 @elseif($log->duration == null)
                                 @else
                                     {{ $log->duration }} Detik

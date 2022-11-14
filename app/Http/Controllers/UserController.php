@@ -6,10 +6,12 @@ use Carbon\Carbon;
 use App\Models\Log;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\Password;
@@ -73,8 +75,13 @@ class UserController extends Controller
             $log->code = $code;
             Session::put('id', $code);
             $log->save();
+            if ($remember == true) {
+                $cookie = cookie('code', $code, 43200);
+            } else {
+                $cookie = cookie('code', $code, 360);
+            }
 
-            return redirect()->route('dashboard')->with('success', 'Welcome ' . $user->name);
+            return redirect()->route('dashboard')->with('success', 'Welcome ' . $user->name)->cookie($cookie);
         }
 
         return back()->with('danger', 'Username Atau Password Salah');
@@ -82,7 +89,7 @@ class UserController extends Controller
 
     public function logout()
     {
-        $log = Log::where('user_id', auth()->user()->id)->where('code', Session::get('id'))->whereNull('logout')->first();
+        $log = Log::where('user_id', auth()->user()->id)->where('code', request()->cookie('code'))->whereNull('logout')->first();
         if ($log) {
             $log->logout = Carbon::now();
             $log->duration = strtotime($log->logout) - strtotime($log->login);
@@ -96,8 +103,9 @@ class UserController extends Controller
             $data->code = 'Not Loged In Account';
             $data->save();
         }
+        $cookie = Cookie::forget('code');
         auth()->logout();
-        return redirect()->route('login');
+        return redirect()->route('login')->cookie($cookie);
     }
 
     public function setting()

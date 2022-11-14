@@ -21,23 +21,24 @@
                 <div class="info">
                     <div class="group">
                         <label for="image">Foto</label>
-                        <input type="file" name="image" id="image">
+                        <input type="file" name="image" id="image" class="input-form">
                     </div>
                     <div class="group">
                         <label for="name">Nama</label>
-                        <input type="text" name="name" id="name" value="{{ $user->name }}">
+                        <input type="text" name="name" id="name" value="{{ $user->name }}" class="input-form">
                     </div>
                     <div class="group">
                         <label for="email">Email</label>
-                        <input type="email" name="email" id="email" value="{{ $user->email }}">
+                        <input type="email" name="email" id="email" value="{{ $user->email }}" class="input-form">
                     </div>
                     <div class="group">
                         <label for="password">Password</label>
-                        <input type="password" name="password" id="password">
+                        <input type="password" name="password" id="password" class="input-form">
                     </div>
                 </div>
             </div>
             <button type="submit" class="link">UPDATE</button>
         </form>
     </div>
+    @include('template.alert')
 @endsection

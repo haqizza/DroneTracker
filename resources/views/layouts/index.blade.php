@@ -28,10 +28,19 @@
 </head>
 
 <body>
+    @include('template.loader')
     <div class="container">
         @include('template.sidebar')
         @yield('content')
     </div>
+    <script>
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const loader = document.querySelector('.loader');
+                loader.classList.add('loader-hidden');
+            }, 1000);
+        })
+    </script>
 </body>
 
 </html>

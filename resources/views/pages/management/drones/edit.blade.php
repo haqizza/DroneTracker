@@ -18,7 +18,7 @@
                         <div class="larger">
                             <div class="group">
                                 <label for="image">Foto</label>
-                                <input type="file" name="image" id="image" value="{{ $drone->image }}">
+                                <input type="file" name="image" id="image" value="{{ $drone->image }}" accept="image/*">
                             </div>
                             <div class="group">
                                 <label for="id">Nomor Seri</label>
@@ -70,4 +70,5 @@
             </div>
         </div>
     </div>
+    @include('template.alert')
 @endsection

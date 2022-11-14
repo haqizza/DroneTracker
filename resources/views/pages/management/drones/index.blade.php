@@ -18,7 +18,7 @@
                         <div class="larger">
                             <div class="group">
                                 <label for="image">Foto</label>
-                                <input type="file" name="image" id="image">
+                                <input type="file" name="image" id="image" accept="image/*">
                             </div>
                             <div class="group">
                                 <label for="id">Nomor Seri</label>
@@ -61,7 +61,8 @@
                                 <a href="{{ route('management.drone.edit', $drone->id) }}" class="btn warning"
                                     title="Edit"><i class="fa-solid fa-pen-to-square"></i></a>
                                 <a href="{{ route('management.drone.destroy', $drone->id) }}" class="btn danger"
-                                    title="Delete" onclick="return confirm('Apakah anda yakin akan menghapus data ini?')"><i class="fa-solid fa-delete-left"></i></a>
+                                    title="Delete" onclick="return confirm('Apakah anda yakin akan menghapus data ini?')"><i
+                                        class="fa-solid fa-delete-left"></i></a>
                             </div>
                         </div>
                     @endforeach
@@ -70,4 +71,5 @@
             </div>
         </div>
     </div>
+    @include('template.alert')
 @endsection

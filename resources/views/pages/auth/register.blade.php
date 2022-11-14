@@ -71,6 +71,7 @@
             });
         });
     </script>
+    @include('template.alert')
 </body>
 
 </html>

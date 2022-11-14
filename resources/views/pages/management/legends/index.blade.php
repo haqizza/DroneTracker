@@ -17,7 +17,7 @@
                         <div class="larger">
                             <div class="group">
                                 <label for="logo">Logo</label>
-                                <input type="file" name="logo" id="logo">
+                                <input type="file" name="logo" id="logo" accept="image/*">
                             </div>
                         </div>
                         <div class="larger">
@@ -47,7 +47,8 @@
                                 <a href="{{ route('management.legend.edit', $legend->id) }}" class="btn warning"
                                     title="Edit"><i class="fa-solid fa-pen-to-square"></i></a>
                                 <a href="{{ route('management.legend.destroy', $legend->id) }}" class="btn danger"
-                                    title="Delete" onclick="return confirm('Apakah anda yakin akan menghapus data ini?')"><i class="fa-solid fa-delete-left"></i></a>
+                                    title="Delete" onclick="return confirm('Apakah anda yakin akan menghapus data ini?')"><i
+                                        class="fa-solid fa-delete-left"></i></a>
                             </div>
                         </div>
                     @endforeach
@@ -56,4 +57,5 @@
             </div>
         </div>
     </div>
+    @include('template.alert')
 @endsection

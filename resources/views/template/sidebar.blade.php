@@ -3,6 +3,7 @@
         <div class="logo">
             @isset($navbars->image)
                 <img src="{{ asset($navbars->image) }}" alt="">
+                <span>{{ $navbars->name }}</span>
             @endisset
         </div>
         <div class="box">

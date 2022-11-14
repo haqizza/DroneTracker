@@ -18,7 +18,7 @@
                         <div class="larger">
                             <div class="group">
                                 <label for="image">Foto</label>
-                                <input type="file" name="image" id="image" value="{{ $user->image }}">
+                                <input type="file" name="image" id="image" value="{{ $user->image }}" accept="image/*">
                             </div>
                             <div class="group">
                                 <label for="name">Nama</label>
@@ -70,4 +70,5 @@
             </div>
         </div>
     </div>
+    @include('template.alert')
 @endsection

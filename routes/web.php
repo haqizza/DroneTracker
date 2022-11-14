@@ -25,6 +25,8 @@ Route::get('/register', [UserController::class, 'register'])->name('register');
 Route::post('/registerproccess', [UserController::class, 'registerproccess'])->name('register.proccess');
 Route::get('/login', [UserController::class, 'login'])->name('login');
 Route::post('/loginproccess', [UserController::class, 'loginproccess'])->name('login.proccess');
+Route::get('/setcookie',[AppController::class,'setcookie']);
+Route::get('/getcookie',[UserController::class,'cookiecheck']);
 Route::middleware('auth')->group(function () {
     Route::get('/', [AppController::class, 'dashboard'])->name('dashboard');
     Route::get('/flightcode', [AppController::class, 'flightcode'])->name('dashboard.flightcode');

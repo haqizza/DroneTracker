@@ -38,4 +38,5 @@
             </form>
         </div>
     </div>
+    @include('template.alert')
 @endsection

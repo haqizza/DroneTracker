@@ -208,8 +208,7 @@
     function ganti() {
         document.getElementById('header').classList.toggle('switch')
         if (document.getElementById('header').classList.contains('switch')) {
-            document.getElementById('hasil').innerHTML = ({{ number_format($counted ?? 0, 3, '.', '.') }}) *
-                1000 + " M";
+            document.getElementById('hasil').innerHTML = ({{ $counted * 1000 }}).toFixed(3) + " M"
         } else {
             document.getElementById('hasil').innerHTML = {{ number_format($counted ?? 0, 3, '.', '.') }} +
                 " KM";

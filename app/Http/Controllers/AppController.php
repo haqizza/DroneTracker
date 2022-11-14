@@ -9,11 +9,26 @@ use App\Models\Track;
 use App\Models\Legend;
 use App\Models\Security;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 
 class AppController extends Controller
 {
+
+    public function setcookie(Request $request)
+    {
+        $response = new Response('Set Cookie');
+        $response->withCookie(cookie('setCookie','success',2147483647));
+        return $response;
+    }
+
+    public function getcookie(Request $request)
+    {
+        $value = $request->cookie('code');
+        echo $value;
+    }
+
     public function dashboard(Request $request)
     {
         $data = Drone::first();
