@@ -15,6 +15,8 @@ return new class extends Migration
     {
         Schema::create('codes', function (Blueprint $table) {
             $table->string('id')->primary()->unique();
+            $table->string('drone_id');
+            $table->foreign('drone_id')->on('drones')->references('id')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }

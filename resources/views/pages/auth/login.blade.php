@@ -11,7 +11,7 @@
     <title>LOGIN</title>
     <style>
         body {
-            background-color: #000000;
+            background-color: #393E46;
         }
     </style>
 </head>

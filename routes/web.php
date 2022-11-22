@@ -25,8 +25,8 @@ Route::get('/register', [UserController::class, 'register'])->name('register');
 Route::post('/registerproccess', [UserController::class, 'registerproccess'])->name('register.proccess');
 Route::get('/login', [UserController::class, 'login'])->name('login');
 Route::post('/loginproccess', [UserController::class, 'loginproccess'])->name('login.proccess');
-Route::get('/setcookie',[AppController::class,'setcookie']);
-Route::get('/getcookie',[UserController::class,'cookiecheck']);
+Route::get('/setcookie', [AppController::class, 'setcookie']);
+Route::get('/getcookie', [UserController::class, 'cookiecheck']);
 Route::middleware('auth')->group(function () {
     Route::get('/', [AppController::class, 'dashboard'])->name('dashboard');
     Route::get('/flightcode', [AppController::class, 'flightcode'])->name('dashboard.flightcode');
@@ -76,5 +76,11 @@ Route::middleware('auth')->group(function () {
     });
     Route::prefix('logs')->group(function () {
         Route::get('/user', [LogsController::class, 'user'])->name('logs.user');
+        Route::prefix('drone')->group(function () {
+            Route::get('/', [LogsController::class, 'drone'])->name('logs.drone');
+            Route::get('/{drone}', [LogsController::class, 'alldrone']);
+            Route::get('/flight/{drone}/{code}', [LogsController::class, 'fcode']);
+        });
+        Route::get('/security', [LogsController::class, 'security'])->name('logs.security');
     });
 });

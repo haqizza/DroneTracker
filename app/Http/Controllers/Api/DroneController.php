@@ -30,8 +30,7 @@ class DroneController extends Controller
             return response()->json($validators->errors());
         }
 
-        $check = Track::where('id', 1)->exists();
-
+        $check = Track::where('drone_id', $request->drone_id)->exists();
         $track = new Track();
         $track->drone_id = $request->input('drone_id');
         $code_check = Code::where('id', $request->code_id)->exists();
@@ -40,6 +39,7 @@ class DroneController extends Controller
         } else {
             $code = new Code();
             $code->id = $request->code_id;
+            $code->drone_id = $request->drone_id;
             $code->save();
             $thecode = $code->id;
         }
@@ -64,21 +64,31 @@ class DroneController extends Controller
             $track->haversine = $angle * 6371;
         } else {
             $track->haversine = 0;
+            $angle = 0;
         }
         if ($check) {
-            $mentah = Track::orderBy('created_at', 'desc')->first();
-            $waktu = (strtotime(Carbon::now()) - strtotime($mentah->created_at)) / 3600;
-            $jarak = $track->haversine;
-            if ($jarak > 0.00000000) {
-                $hasil = $jarak / $waktu;
+            $mentah = Track::orderBy('created_at', 'desc')->where('drone_id', $request->drone_id)->where('code_id', $request->code_id)->first();
+            if ($mentah) {
+                $waktu = (strtotime(Carbon::now()) - strtotime($mentah->created_at)) / 3600;
+                $jarak = $track->haversine;
+                if ($jarak > 0.00000000) {
+                    $hasil = $jarak / $waktu;
+                } else {
+                    $hasil = 0;
+                }
             } else {
+                $waktu = 0;
                 $hasil = 0;
             }
         } else {
+            $waktu = 0;
             $hasil = 0;
         }
         $security_check = Security::where('id', $request->security_id)->exists();
         $track->speed = $hasil;
+        $track->total_duration = $waktu;
+        $totalhaversine =  Track::where('drone_id', $request->drone_id)->where('code_id', $thecode)->pluck('haversine')->toArray();
+        $track->total_haversine = array_sum($totalhaversine) + ($angle * 6371);
         $track->g_roll = $request->g_roll;
         $track->g_pitch = $request->g_pitch;
         $track->tegangan = $request->tegangan;

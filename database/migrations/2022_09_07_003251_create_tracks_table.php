@@ -27,6 +27,8 @@ return new class extends Migration
             $table->double('g_roll')->nullable();
             $table->double('g_pitch')->nullable();
             $table->double('haversine')->nullable();
+            $table->double('total_haversine')->nullable();
+            $table->double('total_duration')->nullable();
             $table->float('rad')->nullable();
             $table->double('speed')->nullable();
             $table->float('arus')->nullable();

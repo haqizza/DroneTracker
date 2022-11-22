@@ -181,10 +181,7 @@
             imagesDirectory: "/js/flight-indicators-js/img/",
         };
         const attitude = new FlightIndicators(
-            attitudeElement,
-            FlightIndicators.TYPE_ATTITUDE,
-            pengaturan,
-        );
+            attitudeElement, FlightIndicators.TYPE_ATTITUDE, pengaturan, );
     </script>
     @include('pages.script.script')
 @endsection

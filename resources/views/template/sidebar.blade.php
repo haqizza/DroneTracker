@@ -35,8 +35,8 @@
                 <button class="nav-link" id="open-report"><i class="fa-solid fa-book"></i><span>Report</span></button>
                 <div class="master-menu" id="report-menu">
                     <a href="{{ route('logs.user') }}" class="drop-link"><span>User Log</span></a>
-                    <a href="{{ route('management.drone') }}" class="drop-link"><span>Drone Log</span></a>
-                    <a href="{{ route('management.drone') }}" class="drop-link"><span>Security Log</span></a>
+                    <a href="{{ route('logs.drone') }}" class="drop-link"><span>Drone Log</span></a>
+                    <a href="{{ route('logs.security') }}" class="drop-link"><span>Security Log</span></a>
                 </div>
             </div>
             <a href="{{ route('setting') }}" class="nav-link"><i class="fa-solid fa-gear"></i><span> Setting</span></a>
