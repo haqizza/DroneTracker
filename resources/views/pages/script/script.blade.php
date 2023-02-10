@@ -171,6 +171,7 @@
         zoom: 12,
         center: new L.latLng(-6.967512300523178, 107.65906856904034)
     });
+    map.invalidateSize()
     map.addLayer(new L.tileLayer('http://{s}.google.com/vt?lyrs=m&x={x}&y={y}&z={z}', {
         maxZoom: 20,
         minZoom: 4,

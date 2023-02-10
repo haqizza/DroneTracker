@@ -15,6 +15,26 @@ body p {
   margin: 0;
 }
 
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: var(--sub);
+  border-radius: 0px 20px 0px 0px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--acc);
+  border-radius: 20px;
+}
+
+::-webkit-scrollbar-corner {
+  background-color: var(--sub);
+  border-radius: 0 0 20px 0;
+}
+
 :root {
   --bg: #222831;
   --sub: #393E46;
@@ -702,7 +722,7 @@ body p {
 }
 .container .main-container .card-log-container .card .card-body .card-title .group label {
   background-color: var(--acc);
-  padding: 0.25rem 0.5rem;
+  padding: 0.5rem 0.75rem;
   border-radius: 10px 10px 0 0;
   width: -webkit-fit-content;
   width: -moz-fit-content;
@@ -710,8 +730,32 @@ body p {
 }
 .container .main-container .card-log-container .card .card-body .card-title .group select {
   background-color: var(--txt);
-  padding: 0.25rem 0.5rem;
+  padding: 0.5rem 0.75rem;
   border-radius: 0 10px 10px 10px;
+}
+.container .main-container .card-log-container .card .card-body .card-title .group input {
+  background-color: var(--txt);
+  padding: 0.5rem 0.75rem;
+  border-radius: 0 10px 10px 10px;
+  border: 0;
+  outline: 0;
+}
+.container .main-container .card-log-container .card .card-body .user {
+  width: 50%;
+  align-items: flex-end;
+}
+.container .main-container .card-log-container .card .card-body .user button {
+  background-color: var(--acc);
+  border: 0;
+  outline: 0;
+  border-radius: 10px;
+  padding: 0.5rem 0.75rem;
+  font-size: 18px;
+  text-transform: uppercase;
+  color: var(--txt);
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
 }
 .container .main-container .card-log-container .card .card-body .body {
   display: flex;
@@ -723,6 +767,23 @@ body p {
   height: -moz-fit-content;
   height: fit-content;
   background-color: var(--bg);
+}
+.container .main-container .card-log-container .card .card-body .body .table-container {
+  overflow: scroll;
+  height: 65vh;
+  width: 100%;
+}
+.container .main-container .card-log-container .card .card-body .body .table-container table {
+  overflow: scroll;
+  height: auto;
+  width: 100%;
+}
+.container .main-container .card-log-container .card .card-body .body .table-container table thead tr th {
+  text-align: start;
+  padding: 0.5rem;
+}
+.container .main-container .card-log-container .card .card-body .body .table-container table tbody tr td {
+  padding: 0.5rem;
 }
 .container .main-container .card-log-container .card .card-body .body .left {
   width: 35%;
@@ -802,7 +863,7 @@ body p {
   transition: 0.2s;
   height: 35vh;
   overflow: hidden;
-  border-radius: 20px;
+  border-radius: 10px;
 }
 .container .main-container .card-log-container .lebaran .card-body .body .left .map #map {
   transition: 0.2s;
@@ -970,22 +1031,6 @@ body p {
   font-size: 18px;
   border-radius: 0 10px 10px 10px;
 }
-.container .main-container .logs::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-}
-.container .main-container .logs::-webkit-scrollbar-track {
-  background-color: var(--sub);
-  border-radius: 0px 20px 0px 0px;
-}
-.container .main-container .logs::-webkit-scrollbar-thumb {
-  background: var(--acc);
-  border-radius: 20px;
-}
-.container .main-container .logs::-webkit-scrollbar-corner {
-  background-color: var(--sub);
-  border-radius: 0 0 20px 0;
-}
 .container .main-container .show {
   display: flex;
 }
@@ -1037,8 +1082,8 @@ body p {
 .container .main-container .title span {
   padding: 0.5rem 1rem;
   font-size: 18px;
-  background-color: var(--txt);
-  color: var(--bg);
+  background-color: var(--bg);
+  color: var(--txt);
   font-weight: 700;
   border-radius: 0px 10px 10px 10px;
   text-transform: uppercase;
@@ -1268,7 +1313,7 @@ body p {
 .container .main-container .sub-content .create {
   display: flex;
   flex-direction: column;
-  width: 50%;
+  width: 25%;
 }
 .container .main-container .sub-content .create form {
   width: 100%;
@@ -1302,7 +1347,7 @@ body p {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  width: 50%;
+  width: 100%;
 }
 .container .main-container .sub-content .create form .body .larger .group {
   display: flex;
@@ -1339,7 +1384,7 @@ body p {
   border: 0;
 }
 .container .main-container .sub-content .manage {
-  width: 50%;
+  width: 75%;
 }
 .container .main-container .sub-content .manage .header {
   padding: 1rem;
@@ -1373,7 +1418,7 @@ body p {
   color: var(--bg);
 }
 .container .main-container .sub-content .manage .drones > * {
-  flex: 0 1 50%;
+  flex: 0 1 33.33%;
 }
 .container .main-container .sub-content .manage .pagination {
   margin: auto;
@@ -1707,4 +1752,12 @@ body p {
 }
 .leaflet-disabled span {
   color: lightgray;
+}
+
+.pill {
+  border-radius: 15px;
+}
+
+.no-padding {
+  padding: 0;
 }/*# sourceMappingURL=style.css.map */

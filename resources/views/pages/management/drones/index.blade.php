@@ -1,73 +1,78 @@
+{{-- --bg: #222831;
+--sub: #393E46;
+--acc: #1e56ee;
+--txt: #EEEEEE; --}}
 @extends('layouts.index')
 @section('content')
-    <div class="main-container">
-        <div class="title">
-            @if ($errors->any())
-                {!! implode('', $errors->all('<div class="alert danger">:message</div>')) !!}
-            @elseif (Session::has('success'))
-                <div class="alert success">{{ Session::get('success') }}</div>
-            @endif
-            <label for="">Management DRONE</label>
-            <span>Drone yang terdaftar terdapat {{ $counted->count() }} unit</span>
+    <div class="flex w-[85%] flex-col p-[1rem]">
+        <div class="flex flex-col">
+            <label for="" class="text-[20px] uppercase">Management DRONE</label>
+            <span class="mb-[2rem] text-[16px] font-[400] leading-[19px]">Drone yang terdaftar terdapat {{ $counted->count() }} unit</span>
         </div>
-        <div class="sub-content">
-            <div class="create">
-                <form action="{{ route('management.drone.store') }}" method="POST" enctype="multipart/form-data">
+        <div class="flex gap-[1rem]">
+            <div class="flex h-fit w-[25%] flex-col rounded-[10px] bg-[#222831] p-[1rem]" id="create">
+                @if ($errors->any())
+                    {!! implode('', $errors->all('<div class="alert p-[10px] mb-[1rem] rounded-[5px] text-[#eeeeee] bg-red-500">:message</div>')) !!}
+                @elseif (Session::has('success'))
+                    <div class="alert mb-[1rem] rounded-[5px] bg-green-600 p-[10px] text-[#eeeeee]">{{ Session::get('success') }}</div>
+                @endif
+                <form action="{{ route('management.drone.store') }}" method="POST" enctype="multipart/form-data" class="flex flex-col gap-[10px]">
                     @csrf
-                    <div class="body">
-                        <div class="larger">
-                            <div class="group">
-                                <label for="image">Foto</label>
-                                <input type="file" name="image" id="image" accept="image/*">
+                    <div class="flex flex-col">
+                        <div class="flex flex-col gap-[10px]">
+                            <div class="flex flex-col gap-[10px]">
+                                <label class="w-fit rounded-t-[5px] px-[0.25rem] text-[14px] font-[400] uppercase text-[#eeeeee]" for="image">Foto</label>
+                                <input type="file" name="image" id="image" accept="image/*" placeholder="Gambar alat . . ."
+                                    class="rounded-[5px] border-[#1e56ee] bg-[#393E46] p-[0.75rem_0.75rem] text-[15px] text-[#eeeeee] outline-none file:mr-[1rem] file:rounded-[5px] file:border-0 file:bg-[#1e56ee] file:px-[1rem] file:text-[#eeeeee] focus:border-r-[2px] focus:border-l-[2px]">
                             </div>
-                            <div class="group">
-                                <label for="id">Nomor Seri</label>
-                                <input type="text" name="id" id="id" required>
+                            <div class="flex flex-col gap-[10px]">
+                                <label class="w-fit rounded-t-[5px] px-[0.25rem] text-[14px] font-[400] uppercase text-[#eeeeee]" for="id">Nomor Seri</label>
+                                <input type="text" name="id" id="id" required placeholder="Masukan nomor seri perangkat . . ."
+                                    class="rounded-[5px] border-[#1e56ee] bg-[#393E46] p-[0.75rem_0.75rem] text-[15px] text-[#eeeeee] outline-none focus:border-r-[2px] focus:border-l-[2px]">
                             </div>
-                        </div>
-                        <div class="larger">
-                            <div class="group">
-                                <label for="merk">Merk</label>
-                                <input type="text" name="merk" id="merk" required>
+                            <div class="flex flex-col gap-[10px]">
+                                <label class="w-fit rounded-t-[5px] px-[0.25rem] text-[14px] font-[400] uppercase text-[#eeeeee]" for="merk">Merk</label>
+                                <input type="text" name="merk" id="merk" required placeholder="Masukan merk perangkat . . ."
+                                    class="rounded-[5px] border-[#1e56ee] bg-[#393E46] p-[0.75rem_0.75rem] text-[15px] text-[#eeeeee] outline-none focus:border-r-[2px] focus:border-l-[2px]">
                             </div>
-                            <div class="group">
-                                <label for="description">Deskripsi</label>
-                                <textarea name="description" id="description" cols="50" rows="10" required></textarea>
+                            <div class="flex flex-col gap-[10px]">
+                                <label class="w-fit rounded-t-[5px] px-[0.25rem] text-[14px] font-[400] uppercase text-[#eeeeee]" for="description">Deskripsi</label>
+                                <textarea name="description" id="description" cols="50" rows="10" required placeholder="Deskripsi perangkat . . ."
+                                    class="rounded-[5px] border-[#1e56ee] bg-[#393E46] p-[0.75rem_0.75rem] text-[15px] text-[#eeeeee] outline-none focus:border-r-[2px] focus:border-l-[2px]"></textarea>
                             </div>
                         </div>
                     </div>
-                    <button type="submit" class="btn">TAMBAH</button>
+                    <button type="submit"
+                        class="cursor-pointer rounded-[10px] border-0 bg-[#1e56ee] p-[0.5rem_0.75rem] text-[15px] font-[700] text-[#eeeeee] outline-0 transition-[0.2s] hover:bg-[#376cfd] active:bg-[#376cfd]">TAMBAH</button>
                 </form>
             </div>
-            <div class="manage">
-                <div class="drones">
+            <div class="flex w-[calc(100%_-_25%)] flex-col">
+                <div class="flex flex-wrap justify-between gap-[1rem]">
                     @foreach ($drones as $drone)
-                        <div class="card">
-                            <a href="{{ route('management.drone.show', $drone->id) }}" class="link-stretch"></a>
-                            <div class="card-img">
-                                <img src="{{ asset($drone->image) }}" alt="">
+                        <div class="flex flex-[1_1_20%] flex-col rounded-[10px] bg-[#222831] p-[10px]">
+                            <div class="mb-[20px] flex flex-col">
+                                <img src="{{ asset($drone->image) }}" alt="{{ $drone->name }}" class="h-[200px] w-[100%] rounded-[10px] border-0 object-cover outline-0">
                             </div>
-                            <div class="card-body">
-                                <div class="card-text">
-                                    <label for="id">Nomor Seri</label>
+                            <div class="flex flex-col gap-[10px]">
+                                <div class="flex">
+                                    <label for="name" class="w-[100px]">Nomor Seri</label>
                                     <span>{{ $drone->id }}</span>
                                 </div>
-                                <div class="card-text">
-                                    <label for="merk">Merk</label>
+                                <div class="flex">
+                                    <label for="email" class="w-[100px]">Merk</label>
                                     <span>{{ $drone->merk }}</span>
                                 </div>
                             </div>
-                            <div class="card-action">
-                                <a href="{{ route('management.drone.edit', $drone->id) }}" class="btn warning"
-                                    title="Edit"><i class="fa-solid fa-pen-to-square"></i></a>
-                                <a href="{{ route('management.drone.destroy', $drone->id) }}" class="btn danger"
-                                    title="Delete" onclick="return confirm('Apakah anda yakin akan menghapus data ini?')"><i
-                                        class="fa-solid fa-delete-left"></i></a>
+                            <div class="mt-[15px] flex gap-[10px]">
+                                <a href="{{ route('management.drone.edit', $drone->id) }}" class="w-[100%] rounded-[5px] bg-orange-400 p-[10px] text-center uppercase text-[#eeeeee]" title="Edit"><i
+                                        class="fa-solid fa-pen-to-square"></i></a>
+                                <a href="{{ route('management.drone.destroy', $drone->id) }}" class="w-[100%] rounded-[5px] bg-red-500 p-[10px] text-center uppercase text-[#eeeeee]" title="Delete"
+                                    onclick="return confirm('Apakah anda yakin akan menghapus data ini?')"><i class="fa-solid fa-delete-left"></i></a>
                             </div>
                         </div>
                     @endforeach
                 </div>
-                {{ $drones->onEachSide(0)->links() }}
+                {{ $drones->links() }}
             </div>
         </div>
     </div>

@@ -26,8 +26,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Paginator::useBootstrapFour();
-
         View::composer('*', function ($view) {
             $navbars = App::first();
             $view->with('navbars', $navbars);

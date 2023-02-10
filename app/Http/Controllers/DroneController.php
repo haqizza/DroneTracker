@@ -14,7 +14,7 @@ class DroneController extends Controller
 {
     public function index()
     {
-        $drones = Drone::paginate(6);
+        $drones = Drone::paginate(5);
         $counted = Drone::all();
 
         return view('pages.management.drones.index', compact('drones', 'counted'));
