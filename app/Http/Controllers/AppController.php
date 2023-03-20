@@ -8,6 +8,7 @@ use App\Models\Drone;
 use App\Models\Track;
 use App\Models\Legend;
 use App\Models\Security;
+use App\Models\TelemetriLogs;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\File;
@@ -54,7 +55,12 @@ class AppController extends Controller
         } else {
             $waktu = '';
         }
-        return view('pages.index', compact('data', 'latest', 'all', 'oldest', 'counted', 'starttoend', 'legends', 'waktu', 'waktustart', 'codes'));
+
+        $logs = TelemetriLogs::query()
+            ->orderByDesc('created_at')
+            ->limit(10)
+            ->get();
+        return view('pages.index', compact('data', 'latest', 'all', 'oldest', 'counted', 'starttoend', 'legends', 'waktu', 'waktustart', 'codes', 'logs'));
     }
 
     public function flightcode($id)
