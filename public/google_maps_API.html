@@ -1,0 +1,223 @@
+<!doctype html>
+<!--
+ @license
+ Copyright 2019 Google LLC. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+-->
+<html>
+  <head>
+    <title>Simple Polylines</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <!-- jsFiddle will insert css and js -->
+    <style>
+      /**
+      * @license
+      * Copyright 2019 Google LLC. All Rights Reserved.
+      * SPDX-License-Identifier: Apache-2.0
+      */
+      /* 
+      * Always set the map height explicitly to define the size of the div element
+      * that contains the map. 
+      */
+      #map {
+        height: 100%;
+      }
+
+      /* 
+      * Optional: Makes the sample page fill the window. 
+      */
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+
+    <!-- 
+      The `defer` attribute causes the callback to execute after the full HTML
+      document has been parsed. For non-blocking uses, avoiding race conditions,
+      and consistent behavior across browsers, consider loading using Promises.
+      See https://developers.google.com/maps/documentation/javascript/load-maps-js-api
+      for more information.
+      -->
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initMap&v=weekly"
+      defer
+    ></script>
+  </body>
+</html>
+<script>
+ /**
+ * @license
+ * Copyright 2019 Google LLC. All Rights Reserved.
+ * SPDX-License-Identifier: Apache-2.0
+ */
+// This example creates a 2-pixel-wide red polyline showing the path of
+// the first trans-Pacific flight between Oakland, CA, and Brisbane,
+// Australia which was made by Charles Kingsford Smith.
+async function initMap() {
+  const map = new google.maps.Map(document.getElementById("map"), {
+    zoom: 3,
+    center: {
+      lat: 0,
+      lng: -180
+    },
+    mapTypeId: "terrain",
+  });
+  const flightPlanCoordinates = [{
+      lat: -7.141026,
+      lng: 107.514130
+    },
+    {
+      lat: -7.140985,
+      lng: 107.514186
+    },
+    {
+      lat: -7.140971,
+      lng: 107.514278
+    },
+    {
+      lat: -7.141054,
+      lng: 107.514315
+    },
+    {
+      lat: -7.141224,
+      lng: 107.514382
+    },
+    {
+      lat: -7.141462,
+      lng: 107.514367
+    },
+    {
+      lat: -7.141425,
+      lng: 107.514324
+    },
+    {
+      lat: -7.141329,
+      lng: 107.514261
+    },
+    {
+      lat: -7.141320,
+      lng: 107.514323
+    },
+    {
+      lat: -7.141029,
+      lng: 107.514298
+    },
+    {
+      lat: -7.141052,
+      lng: 107.514202
+    },
+    {
+      lat: -7.141018,
+      lng: 107.514147
+    },
+    {
+      lat: -7.141568,
+      lng: 107.514267
+    },
+    {
+      lat: -7.141788,
+      lng: 107.514460
+    },
+    {
+      lat: -7.141715,
+      lng: 107.514494
+    },
+  ];
+  var lineSymbol = {
+    path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW
+  };
+
+  const flightPath = new google.maps.Polyline({
+    path: flightPlanCoordinates,
+    icons: [{
+      icon: lineSymbol,
+      offset: '0%'
+    }, {
+      icon: lineSymbol,
+      offset: '50%'
+    }, {
+      icon: lineSymbol,
+      offset: '100%'
+    }],
+    geodesic: true,
+    strokeColor: "#FF0000",
+    strokeOpacity: 1.0,
+    strokeWeight: 2,
+  });
+  
+ /*  console.log(flightPath.getPath().getArray()[0].lat()) */
+  
+  const {spherical} = await google.maps.importLibrary("geometry")
+  var polylineLength =[]
+    polylineLength.push(spherical.computeDistanceBetween(
+  	new google.maps.LatLng(flightPlanCoordinates[0].lat, flightPlanCoordinates[0].lng),
+  	new google.maps.LatLng(flightPlanCoordinates[1].lat, flightPlanCoordinates[1].lng)
+  	))
+      polylineLength.push(spherical.computeDistanceBetween(
+  	new google.maps.LatLng(flightPlanCoordinates[1].lat, flightPlanCoordinates[1].lng),
+  	new google.maps.LatLng(flightPlanCoordinates[2].lat, flightPlanCoordinates[2].lng)
+  	))
+      polylineLength.push(spherical.computeDistanceBetween(
+  	new google.maps.LatLng(flightPlanCoordinates[2].lat, flightPlanCoordinates[2].lng),
+  	new google.maps.LatLng(flightPlanCoordinates[3].lat, flightPlanCoordinates[3].lng)
+  	))
+      polylineLength.push(spherical.computeDistanceBetween(
+  	new google.maps.LatLng(flightPlanCoordinates[3].lat, flightPlanCoordinates[3].lng),
+  	new google.maps.LatLng(flightPlanCoordinates[4].lat, flightPlanCoordinates[4].lng)
+  	))
+      polylineLength.push(spherical.computeDistanceBetween(
+  	new google.maps.LatLng(flightPlanCoordinates[4].lat, flightPlanCoordinates[4].lng),
+  	new google.maps.LatLng(flightPlanCoordinates[5].lat, flightPlanCoordinates[5].lng)
+  	))
+      polylineLength.push(spherical.computeDistanceBetween(
+  	new google.maps.LatLng(flightPlanCoordinates[1].lat, flightPlanCoordinates[1].lng),
+  	new google.maps.LatLng(flightPlanCoordinates[2].lat, flightPlanCoordinates[2].lng)
+  	))
+      polylineLength.push(spherical.computeDistanceBetween(
+  	new google.maps.LatLng(flightPlanCoordinates[1].lat, flightPlanCoordinates[1].lng),
+  	new google.maps.LatLng(flightPlanCoordinates[2].lat, flightPlanCoordinates[2].lng)
+  	))
+      polylineLength.push(spherical.computeDistanceBetween(
+  	new google.maps.LatLng(flightPlanCoordinates[1].lat, flightPlanCoordinates[1].lng),
+  	new google.maps.LatLng(flightPlanCoordinates[2].lat, flightPlanCoordinates[2].lng)
+  	))
+      polylineLength.push(spherical.computeDistanceBetween(
+  	new google.maps.LatLng(flightPlanCoordinates[1].lat, flightPlanCoordinates[1].lng),
+  	new google.maps.LatLng(flightPlanCoordinates[2].lat, flightPlanCoordinates[2].lng)
+  	))
+      polylineLength.push(spherical.computeDistanceBetween(
+  	new google.maps.LatLng(flightPlanCoordinates[1].lat, flightPlanCoordinates[1].lng),
+  	new google.maps.LatLng(flightPlanCoordinates[2].lat, flightPlanCoordinates[2].lng)
+  	))
+  //  for (var i = 0; i < flightPlanCoordinates.length; i++){
+  // polylineLength.push(spherical.computeDistanceBetween(
+  //   new google.maps.LatLng(flightPlanCoordinates[0].lat, flightPlanCoordinates[0].lng),
+  //   new google.maps.LatLng(flightPlanCoordinates[1].lat, flightPlanCoordinates[1].lng)
+  //   )
+  // )
+  // } 
+  
+  /* var polylineLength = spherical.computeLength(flightPath.getPath()) */
+  
+  console.log(polylineLength)
+  
+  flightPath.setMap(map);
+  var polylineLength = []
+  
+ /*  for (var i = 0; i < flightPlanCoordinates.length; i++) {
+    polylineLength.push(google.maps.geometry.spherical.computeDistanceBetween(flightPlanCoordinates.getPath().getArray())); */
+
+}
+
+window.initMap = initMap;
+
+
+</script>
