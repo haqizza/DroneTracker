@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         //
-        Schema::create('telemetriLogs', function (Blueprint $table) {
+        Schema::create('telemetrilogs', function (Blueprint $table) {
             $table->id();
             $table->string('latitude')->nullable();
             $table->string('longitude')->nullable();
@@ -42,6 +42,6 @@ return new class extends Migration
      */
     public function down()
     {
-        //
+        //Schema::dropIfExists('telemetrilogs');
     }
 };
