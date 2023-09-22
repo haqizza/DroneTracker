@@ -178,9 +178,18 @@
         noWrap: true,
         subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
     }));
+
+    var polygon = L.polygon([
+		[-6.967512300523178, 107.65906856904034],
+		[-6.87, 107.7],
+		[-6.97, 107.60]
+	], {color: 'red'}).addTo(map)
+    map.fitBounds(polygon.getBounds());
+
     L.control.mapCenterCoord({
         onMove: true,
     }).addTo(map);
+    
     var droneIcon = L.Icon.extend({
         options: {
             iconSize: [30, 30],
