@@ -60,30 +60,30 @@
                 <div class="mx-2 my-4 p-2">
                     <h3 class="text-xl font-[700] mb-2">Telemetri Logs</h3>
                     <div class="border border-white rounded p-2 overflow-scroll">
-                            <table class="table">
-                                <tr>
-                                    <td class="p-2 border border-white rounded rounded">Timestamp:</td>
-                                    <td class="p-2 border border-white rounded rounded">Latitude:</td>
-                                    <td class="p-2 border border-white rounded rounded">Longitude:</td>
-                                    <td class="p-2 border border-white rounded rounded">Altitude:</td>
-                                    <td class="p-2 border border-white rounded rounded">SoG:</td>
-                                    <td class="p-2 border border-white rounded rounded">CoG:</td>
-                                    <td class="p-2 border border-white rounded rounded">Current:</td>
-                                    <td class="p-2 border border-white rounded rounded">Voltage:</td>
-                                    <td class="p-2 border border-white rounded rounded">Power:</td>
-                                    <td class="p-2 border border-white rounded rounded">Status:</td>
-                                    <td class="p-2 border border-white rounded rounded">AX:</td>
-                                    <td class="p-2 border border-white rounded rounded">AY:</td>
-                                    <td class="p-2 border border-white rounded rounded">AZ:</td>
-                                    <td class="p-2 border border-white rounded rounded">GX:</td>
-                                    <td class="p-2 border border-white rounded rounded">GY:</td>
-                                    <td class="p-2 border border-white rounded rounded">GZ:</td>
-                                </tr>
-                        @foreach ($logs as $log)
-                        <tr>
-                                    <td class="p-2 border border-white rounded rounded">{{ $log->created_at }}</td>
-                                    <td class="p-2 border border-white rounded rounded">{{ $log->latitude }}</td>
-                                    <td class="p-2 border border-white rounded rounded">{{ $log->longitude }}</td>
+                        <table class="table">
+                            <tr>
+                                <td class="p-2 border border-white rounded rounded">Timestamp</td>
+                                <td class="p-2 border border-white rounded rounded">Latitude</td>
+                                <td class="p-2 border border-white rounded rounded">Longitude</td>
+                                <td class="p-2 border border-white rounded rounded">Altitude</td>
+                                <td class="p-2 border border-white rounded rounded">SoG</td>
+                                <td class="p-2 border border-white rounded rounded">CoG</td>
+                                <td class="p-2 border border-white rounded rounded">Current</td>
+                                <td class="p-2 border border-white rounded rounded">Voltage</td>
+                                <td class="p-2 border border-white rounded rounded">Power</td>
+                                <td class="p-2 border border-white rounded rounded">Status</td>
+                                <td class="p-2 border border-white rounded rounded">AX</td>
+                                <td class="p-2 border border-white rounded rounded">AY</td>
+                                <td class="p-2 border border-white rounded rounded">AZ</td>
+                                <td class="p-2 border border-white rounded rounded">GX</td>
+                                <td class="p-2 border border-white rounded rounded">GY</td>
+                                <td class="p-2 border border-white rounded rounded">GZ</td>
+                            </tr>
+                            @foreach ($logs as $log)
+                            <tr>
+                                <td class="p-2 border border-white rounded rounded">{{ $log->created_at }}</td>
+                                <td class="p-2 border border-white rounded rounded">{{ $log->latitude }}</td>
+                                <td class="p-2 border border-white rounded rounded">{{ $log->longitude }}</td>
                                 <td class="p-2 border border-white rounded rounded">{{ $log->altitude }}</td>
                                 <td class="p-2 border border-white rounded rounded">{{ $log->SoG }}</td>
                                 <td class="p-2 border border-white rounded rounded">{{ $log->CoG }}</td>
@@ -96,8 +96,10 @@
                                 <td class="p-2 border border-white rounded rounded">{{ $log->az }}</td>
                                 <td class="p-2 border border-white rounded rounded">{{ $log->gx }}</td>
                                 <td class="p-2 border border-white rounded rounded">{{ $log->gy }}</td>
-                                <td class="p-2 border border-white rounded rounded">{{ $log->gz }}</td></tr>                                        
-                        @endforeach</table>
+                                <td class="p-2 border border-white rounded rounded">{{ $log->gz }}</td>
+                            </tr>                                        
+                            @endforeach
+                        </table>
                     </div>
                 </div>
             </div>
