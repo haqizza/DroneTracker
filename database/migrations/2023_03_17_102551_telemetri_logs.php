@@ -16,6 +16,7 @@ return new class extends Migration
         //
         Schema::create('telemetrilogs', function (Blueprint $table) {
             $table->id();
+            $table->string('payload_time')->nullable();
             $table->string('latitude')->nullable();
             $table->string('longitude')->nullable();
             $table->string('altitude')->nullable();
@@ -24,13 +25,24 @@ return new class extends Migration
             $table->string('current')->nullable();
             $table->string('voltage')->nullable();
             $table->string('power')->nullable();
-            $table->string('status')->nullable();
+            $table->string('classification')->nullable();
             $table->string('ax')->nullable();
             $table->string('ay')->nullable();
             $table->string('az')->nullable();
             $table->string('gx')->nullable();
             $table->string('gy')->nullable();
             $table->string('gz')->nullable();
+            $table->string('mx')->nullable();
+            $table->string('my')->nullable();
+            $table->string('mz')->nullable();
+            $table->string('roll')->nullable();
+            $table->string('pitch')->nullable();
+            $table->string('yaw')->nullable();
+            $table->string('temprature')->nullable();
+            $table->string('humidity')->nullable();
+            $table->tinyInteger('photo')->nullable();
+            $table->tinyInteger('complete')->nullable();
+            $table->tinyInteger('use')->nullable();
             $table->timestamps();
         });
     }
@@ -42,6 +54,6 @@ return new class extends Migration
      */
     public function down()
     {
-        //Schema::dropIfExists('telemetrilogs');
+        Schema::dropIfExists('telemetrilogs');
     }
 };

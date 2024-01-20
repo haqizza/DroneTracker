@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
 
 class AppController extends Controller
 {
@@ -32,82 +33,131 @@ class AppController extends Controller
 
     public function dashboard(Request $request)
     {
-        $data = Drone::first();
-        $latest = Track::orderBy('created_at', 'desc')->first();
-        $oldest = Track::orderBy('created_at', 'asc')->first();
-        $codes = Code::all();
-        $all = Track::all();
-        $count = Track::pluck('haversine')->toArray();
-        $counted = array_sum($count);
-        $latFrom = deg2rad($latest->latitude ?? 0);
-        $lgnFrom = deg2rad($latest->longitude ?? 0);
-        $latTo = deg2rad($oldest->latitude ?? 0);
-        $lngTo = deg2rad($oldest->longitude ?? 0);
-        $latDelta = $latTo - $latFrom;
-        $lgnDelta = $lngTo - $lgnFrom;
-        $angle = 2 * asin(sqrt(pow(sin($latDelta / 2), 2) + cos($latFrom) * cos($latTo) * pow(sin($lgnDelta / 2), 2)));
-        $starttoend = $angle * 6371;
-        $legends = Legend::all();
-        $waktustart = Track::orderBy('created_at', 'asc')->first();
-        $waktuend = Track::orderBy('created_at', 'desc')->first();
-        if ($waktustart && $waktuend) {
-            $waktu = (strtotime($waktuend->created_at) - strtotime($waktustart->created_at));
+        // $data = Drone::first();
+        // $latest = Track::orderBy('created_at', 'desc')->first();
+        // $oldest = Track::orderBy('created_at', 'asc')->first();
+        // $codes = Code::all();
+        // $all = Track::all();
+        // $count = Track::pluck('haversine')->toArray();
+        // $counted = array_sum($count);
+        // $latFrom = deg2rad($latest->latitude ?? 0);
+        // $lgnFrom = deg2rad($latest->longitude ?? 0);
+        // $latTo = deg2rad($oldest->latitude ?? 0);
+        // $lngTo = deg2rad($oldest->longitude ?? 0);
+        // $latDelta = $latTo - $latFrom;
+        // $lgnDelta = $lngTo - $lgnFrom;
+        // $angle = 2 * asin(sqrt(pow(sin($latDelta / 2), 2) + cos($latFrom) * cos($latTo) * pow(sin($lgnDelta / 2), 2)));
+        // $starttoend = $angle * 6371;
+        // $legends = Legend::all();
+        // $waktustart = Track::orderBy('created_at', 'asc')->first();
+        // $waktuend = Track::orderBy('created_at', 'desc')->first();
+        // if ($waktustart && $waktuend) {
+        //     $waktu = (strtotime($waktuend->created_at) - strtotime($waktustart->created_at));
+        // } else {
+        //     $waktu = '';
+        // }
+
+        $logs = TelemetriLogs::where('complete','1')->get();
+        $logsCount = $logs->count();
+
+        $oldest = TelemetriLogs::orderBy('created_at', 'asc')->first();
+        $latest = TelemetriLogs::orderBy('created_at', 'desc')->first();
+        $waktu = '';
+        if ($oldest && $latest) {
+            $waktu = (strtotime($latest->created_at) - strtotime($oldest->created_at));
         } else {
             $waktu = '';
         }
 
-        $logs = TelemetriLogs::query()
-            ->orderByDesc('created_at')
-            ->limit(10)
-            ->get();
-        return view('pages.index', compact('data', 'latest', 'all', 'oldest', 'counted', 'starttoend', 'legends', 'waktu', 'waktustart', 'codes', 'logs'));
+        return view('pages.index', compact('logs', 'logsCount', 'oldest', 'latest', 'waktu'));
     }
 
-    public function flightcode($id)
+    public function predict(Request $request)
     {
-        $code = Track::where('code_id', $id)->get();
-        return response()->json($code);
+
+        // $logs = TelemetriLogs::where('complete', '1')->get();
+        $logs = TelemetriLogs::where('use', '1')->get();
+
+        $logsCount = $logs->count();
+
+
+
+        return view('pages.predict.index', compact('logs', 'logsCount'));
     }
 
-    public function setting()
+    public function setPhoto(Request $request)
     {
-        return view('pages.setting');
-    }
+        // TelemetriLogs::whereNotNull('photo')
+        // ->update(['photo' => null]);
 
-    public function update(Request $request)
-    {
-        $validator = Validator::make(
-            $request->all(),
-            [
-                'name' => 'required',
-                'description' => 'required',
-                'image' => 'nullable|image|mimes:png,jpg,jpeg',
-                'version' => 'required'
-            ]
-        );
+        $listPhoto = Storage::disk('public')->allFiles('images/photos');
 
-        if ($validator->fails()) {
-            return back()->withErrors($validator->errors());
+        $photoPath = 'images/photos/';
+
+        $logs = TelemetriLogs::get();
+
+        $logsCount = $logs->count();
+
+        $dataCount = 1;
+
+        for ($i = 1; $i < count($listPhoto) + 1; $i++) {
+            $telemetriLog = TelemetriLogs::find($dataCount);
+
+            $telemetriLog->photo = $photoPath . $i . '.jpg';
+
+            $telemetriLog->save();
+
+            $dataCount += 2;
         }
 
-
-        $app = App::first();
-        $app->name = $request->name;
-        $app->description = $request->description;
-        if ($request->image) {
-            if (File::exists($app->image)) {
-                unlink($app->image);
-                $img = $request->image->store('images/app');
-            } else {
-                $img = $request->image->store('images/app');
-            }
-        } else {
-            $img = $app->image;
-        }
-        $app->image = $img;
-        $app->version = $request->version;
-        $app->save();
-
-        return back()->with('success', 'Berhasil Update Profile Aplikasi');
+        return back();
     }
+
+    // public function flightcode($id)
+    // {
+    //     $code = Track::where('code_id', $id)->get();
+    //     return response()->json($code);
+    // }
+
+    // public function setting()
+    // {
+    //     return view('pages.setting');
+    // }
+
+    // public function update(Request $request)
+    // {
+    //     $validator = Validator::make(
+    //         $request->all(),
+    //         [
+    //             'name' => 'required',
+    //             'description' => 'required',
+    //             'image' => 'nullable|image|mimes:png,jpg,jpeg',
+    //             'version' => 'required'
+    //         ]
+    //     );
+
+    //     if ($validator->fails()) {
+    //         return back()->withErrors($validator->errors());
+    //     }
+
+
+    //     $app = App::first();
+    //     $app->name = $request->name;
+    //     $app->description = $request->description;
+    //     if ($request->image) {
+    //         if (File::exists($app->image)) {
+    //             unlink($app->image);
+    //             $img = $request->image->store('images/app');
+    //         } else {
+    //             $img = $request->image->store('images/app');
+    //         }
+    //     } else {
+    //         $img = $app->image;
+    //     }
+    //     $app->image = $img;
+    //     $app->version = $request->version;
+    //     $app->save();
+
+    //     return back()->with('success', 'Berhasil Update Profile Aplikasi');
+    // }
 }

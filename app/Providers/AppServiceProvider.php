@@ -27,8 +27,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         View::composer('*', function ($view) {
-            $navbars = App::first();
-            $view->with('navbars', $navbars);
+            // $navbars = App::first();
+            // $view->with('navbars', $navbars);
         });
     }
 }
